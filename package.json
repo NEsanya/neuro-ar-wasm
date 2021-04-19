@@ -1,0 +1,11 @@
+{
+  "name": "neuro-ar-wasm",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/NEsanya/neuro-ar-wasm.git",
+  "author": "NEsanya <nesanya1990@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
