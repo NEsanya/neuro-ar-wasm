@@ -3,11 +3,23 @@
     <meta charset="utf-8" />
     <title>RustMart</title>
     <link rel="shortcut icon" href="#" />
+    <style>
+      .bg-video {
+        position: fixed;
+        right: 0;
+        bottom: 0;
+        min-width: 100%;
+        min-height: 100%;
+      }
+      .content {
+        position: fixed;
+        bottom: 0;
+        color: #f1f1f1;
+      }
+    </style>
+    <script src="./compass.js"></script>
   </head>
   <body>
-    <div id="test">
-
-    </div>
     <script type="module">
       import init from "/wasm.js";
       init();

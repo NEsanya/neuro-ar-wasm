@@ -1,5 +1,5 @@
 use wasm_bindgen::prelude::*;
-use wasm_bindgen::JsCast;
+// use wasm_bindgen::JsCast;
 use yew::prelude::*;
 
 struct Main {
@@ -54,8 +54,8 @@ impl Component for Main {
     fn view(&self) -> Html {
         html! {
             <>
-            <video></video>
-            <div>
+            <video class="bg-video"></video>
+            <div class="content">
                 <button onclick=self.link.callback(|_| MainActions::LeadTheWay)>{"Начать поиск"}</button>
                 <p>
                     {
@@ -86,6 +86,20 @@ pub fn run_app() {
                 }
             })
             .catch(console.log);
+            Compass.noSupport(() => {
+                console.log('Nope')
+            })
+            Compass.needGPS(function () {
+                console.log('JPS')         // Step 1: we need GPS signal
+              }).needMove(function () {
+                console.log('move1')
+                console.log('move2') // Step 2: user must go forward
+              }).init(function () {
+                console.log('init') // GPS hack is enabled
+            });
+            Compass.watch(function (heading) {
+                console.log(heading)
+            });              
     ");
     fc.call0(&JsValue::NULL).expect("Function is terrable");
 }
