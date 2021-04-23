@@ -2,6 +2,9 @@ use wasm_bindgen::prelude::*;
 // use wasm_bindgen::JsCast;
 use yew::prelude::*;
 
+mod js_structs;
+use js_structs::mainjs;
+
 struct Main {
     link: ComponentLink<Self>,
     way_string: Option<String>
@@ -75,17 +78,6 @@ impl Component for Main {
 pub fn run_app() {
     App::<Main>::new().mount_to_body();
     let fc = js_sys::Function::new_no_args("
-        const constraints = { video: true }
-
-        navigator.mediaDevices.getUserMedia(constraints)
-            .then(function(mediaStream) {
-                const video = document.querySelector('video')
-                video.srcObject = mediaStream
-                video.onloadedmetadata = function(e) {
-                    video.play()
-                }
-            })
-            .catch(console.log);
             Compass.noSupport(() => {
                 console.log('Nope')
             })
@@ -102,4 +94,6 @@ pub fn run_app() {
             });              
     ");
     fc.call0(&JsValue::NULL).expect("Function is terrable");
+    mainjs::BluethoothJS::new().run_code();
+    mainjs::StreamJS::new().run_code()
 }
