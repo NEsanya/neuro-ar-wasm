@@ -1,4 +1,8 @@
 pub mod mainjs {
+    fn code_runner(s: &str, f: &str) {
+        js_sys::Function::new_no_args(s).call0(&wasm_bindgen::JsValue::NULL).expect(f);
+    }
+
     pub struct BluethoothJS<'a> {
         code: &'a str
     }
@@ -15,7 +19,7 @@ pub mod mainjs {
         }
 
         pub fn run_code(&self) -> () {
-            js_sys::Function::new_no_args(self.code).call0(&wasm_bindgen::JsValue::NULL).expect("Function (Bluetooth) is terrable");
+            code_runner(self.code, "Function (Bluetooth) is terrable")
         }
     }
 
@@ -40,7 +44,7 @@ pub mod mainjs {
         }
 
         pub fn run_code(&self) -> () {
-            js_sys::Function::new_no_args(self.code).call0(&wasm_bindgen::JsValue::NULL).expect("Function (Stream) is terrable");
+            code_runner(self.code, "Function (Stream) is terrable")
         }
     }
 }
