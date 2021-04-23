@@ -14,7 +14,17 @@ pub mod mainjs {
     impl<'a> BluethoothJS<'a> {
         pub fn new() -> Self {
             BluethoothJS {
-                code: "console.log(navigator.bluetooth)"
+                code: "
+                    const socket = new WebSocket('ws://localhost:8080')
+
+                    socket.onopen = () => {
+                        console.log('connected')
+                    };
+                      
+                      socket.onmessage = (data) => {
+                        console.log(data.data);
+                    };
+                "
             }
         }
 

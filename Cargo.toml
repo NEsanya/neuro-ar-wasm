@@ -17,4 +17,8 @@ js-sys = "0.3.50"
 
 [dependencies.web-sys]
 version = "0.3.50"
-features = ["Window", "Navigator", "MediaDevices", "MediaStreamConstraints", "Document", "HtmlVideoElement", "Element", "HtmlMediaElement", "MediaStream"]
+features = [
+    "Window", 
+    "Navigator",
+    "Bluetooth"
+]
