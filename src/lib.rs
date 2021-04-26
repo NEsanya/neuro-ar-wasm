@@ -7,7 +7,7 @@ use js_structs::mainjs;
 
 struct Main {
     link: ComponentLink<Self>,
-    way_string: Option<String>
+    way_string: bool
 }
 
 enum MainActions {
@@ -39,13 +39,16 @@ impl Component for Main {
         // };
         Self {
             link,
-            way_string: None
+            way_string: false
         }
     }
 
     fn update(&mut self, msg: Self::Message) -> ShouldRender {
         match msg {
-            MainActions::LeadTheWay => self.way_string = Some("value".to_string()) 
+            MainActions::LeadTheWay => {
+                mainjs::FindJS::new().run_code();
+                self.way_string = true
+            } 
         }
         true
     }
@@ -59,15 +62,7 @@ impl Component for Main {
             <>
             <video class="bg-video"></video>
             <div class="content">
-                <button onclick=self.link.callback(|_| MainActions::LeadTheWay)>{"Начать поиск"}</button>
-                <p>
-                    {
-                        match &self.way_string {
-                            Some(value) => String::from(value),
-                            None => String::from("")
-                        }
-                    }
-                </p>
+                <button onclick=self.link.callback(|_| MainActions::LeadTheWay) hidden=self.way_string>{"Начать поиск"}</button>
             </div>
             </>
         }
@@ -77,23 +72,5 @@ impl Component for Main {
 #[wasm_bindgen(start)]
 pub fn run_app() {
     App::<Main>::new().mount_to_body();
-    let fc = js_sys::Function::new_no_args("
-            Compass.noSupport(() => {
-                console.log('Nope')
-            })
-            Compass.needGPS(function () {
-                console.log('JPS')         // Step 1: we need GPS signal
-              }).needMove(function () {
-                console.log('move1')
-                console.log('move2') // Step 2: user must go forward
-              }).init(function () {
-                console.log('init') // GPS hack is enabled
-            });
-            Compass.watch(function (heading) {
-                console.log(heading)
-            });              
-    ");
-    fc.call0(&JsValue::NULL).expect("Function is terrable");
-    mainjs::BluethoothJS::new().run_code();
     mainjs::StreamJS::new().run_code()
 }

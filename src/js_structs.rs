@@ -3,7 +3,7 @@ pub mod mainjs {
         js_sys::Function::new_no_args(s).call0(&wasm_bindgen::JsValue::NULL).expect(f);
     }
 
-    pub struct BluethoothJS<'a> {
+    pub struct FindJS<'a> {
         code: &'a str
     }
 
@@ -11,19 +11,35 @@ pub mod mainjs {
         code: &'a str
     }
 
-    impl<'a> BluethoothJS<'a> {
+    impl<'a> FindJS<'a> {
         pub fn new() -> Self {
-            BluethoothJS {
+            FindJS {
                 code: "
                     const socket = new WebSocket('ws://localhost:8080')
+                    let wifi_data = []
 
                     socket.onopen = () => {
                         console.log('connected')
-                    };
+                    }
                       
-                      socket.onmessage = (data) => {
-                        console.log(data.data);
-                    };
+                    socket.onmessage = (data) => {
+                        wifi_data = data.data
+                    }
+
+                    Compass.noSupport(() => {
+                        console.log('Nope')
+                    })
+                    Compass.needGPS(function () {
+                        console.log('JPS')         // Step 1: we need GPS signal
+                      }).needMove(function () {
+                        console.log('move1')
+                        console.log('move2') // Step 2: user must go forward
+                      }).init(function () {
+                        console.log('init') // GPS hack is enabled
+                    })
+                    Compass.watch(function (heading) {
+                        console.log(heading)
+                    })         
                 "
             }
         }
