@@ -11,8 +11,13 @@ pub mod mainjs {
         code: &'a str
     }
 
-    impl<'a> FindJS<'a> {
-        pub fn new() -> Self {
+    pub trait JS {
+        fn new() -> Self;
+        fn run_code(&self) -> ();
+    }
+
+    impl<'a> JS for FindJS<'a> {
+        fn new() -> Self {
             FindJS {
                 code: "
                     const socket = new WebSocket('ws://localhost:8080')
@@ -44,14 +49,14 @@ pub mod mainjs {
             }
         }
 
-        pub fn run_code(&self) -> () {
+        fn run_code(&self) -> () {
             code_runner(self.code, "Function (Bluetooth) is terrable")
         }
     }
 
 
-    impl<'a> StreamJS<'a> {
-        pub fn new() -> Self {
+    impl<'a> JS for StreamJS<'a> {
+        fn new() -> Self {
             StreamJS {
                 code: "
                     const constraints = { video: true }
@@ -69,8 +74,12 @@ pub mod mainjs {
             }
         }
 
-        pub fn run_code(&self) -> () {
+        fn run_code(&self) -> () {
             code_runner(self.code, "Function (Stream) is terrable")
         }
+    }
+
+    pub fn run<T: JS>() -> () {
+        T::new().run_code();
     }
 }

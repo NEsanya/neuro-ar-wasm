@@ -46,10 +46,10 @@ impl Component for Main {
     fn update(&mut self, msg: Self::Message) -> ShouldRender {
         match msg {
             MainActions::LeadTheWay => {
-                mainjs::FindJS::new().run_code();
+                mainjs::run::<mainjs::FindJS>();
                 self.way_string = true
             } 
-        }
+        };
         true
     }
 
@@ -72,5 +72,5 @@ impl Component for Main {
 #[wasm_bindgen(start)]
 pub fn run_app() {
     App::<Main>::new().mount_to_body();
-    mainjs::StreamJS::new().run_code()
+    mainjs::run::<mainjs::StreamJS>();
 }
