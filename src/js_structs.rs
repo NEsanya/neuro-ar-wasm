@@ -21,7 +21,7 @@ pub mod mainjs {
             FindJS {
                 code: "
                     const socket = new WebSocket('ws://localhost:8080')
-                    let wifi_data = []
+                    let wifi_data = false
 
                     socket.onopen = () => {
                         console.log('connected')
@@ -34,7 +34,7 @@ pub mod mainjs {
                     Compass.noSupport(() => {
                         console.log('Nope')
                     })
-                    Compass.needGPS(function () {
+                    Compass.needGPS(() => {
                         console.log('JPS')         // Step 1: we need GPS signal
                       }).needMove(function () {
                         console.log('move1')
@@ -42,8 +42,27 @@ pub mod mainjs {
                       }).init(function () {
                         console.log('init') // GPS hack is enabled
                     })
-                    Compass.watch(function (heading) {
-                        console.log(heading)
+                    Compass.watch(heading => {
+                        const img = document.getElementById('img-vec')
+                        if(wifi_data) {
+                            img.src = './img/success.png'
+                        } else {
+                            if(heading < 90) {
+                                img.src = './img/up-arrow.png'
+                            }
+                            else if(heaing < 180) {
+                                img.src = './img/left-arrow.png'
+                            }
+                            else if (heading< 270) {
+                                img.src = './img/down-arrow.png'
+                            } 
+                            else if (heading < 360) {
+                                img.src = './img/right-arrow.png'
+                            }
+                            else {
+                                alert('something wrong') 
+                            }
+                        }
                     })         
                 "
             }

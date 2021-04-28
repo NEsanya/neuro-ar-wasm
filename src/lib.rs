@@ -7,7 +7,7 @@ use js_structs::mainjs;
 
 struct Main {
     link: ComponentLink<Self>,
-    way_string: bool
+    way_string: bool,
 }
 
 enum MainActions {
@@ -39,7 +39,7 @@ impl Component for Main {
         // };
         Self {
             link,
-            way_string: false
+            way_string: false,
         }
     }
 
@@ -47,7 +47,7 @@ impl Component for Main {
         match msg {
             MainActions::LeadTheWay => {
                 mainjs::run::<mainjs::FindJS>();
-                self.way_string = true
+                self.way_string = true;
             } 
         };
         true
@@ -63,6 +63,7 @@ impl Component for Main {
             <video class="bg-video"></video>
             <div class="content">
                 <button onclick=self.link.callback(|_| MainActions::LeadTheWay) hidden=self.way_string>{"Начать поиск"}</button>
+                <img id="img-vec" />
             </div>
             </>
         }

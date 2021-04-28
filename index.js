@@ -22,7 +22,10 @@ const server = https.createServer(
 
 const wss = new ws.Server({ port: 8080 })
 wss.on('connection', socket => {
-    setInterval(() => wifi.scan((err, netw) => err ? console.log(err) : socket.send(JSON.stringify(netw))), 1000)
+    setInterval(() => wifi.scan((err, netw) => err ? 
+        console.log(err) : 
+        socket.send(JSON.stringify(netw.find(el => el.ssid === "1") ? (netw.find(el => el.ssid === "1").signal_level > -40 ? true : false) : false))
+        ), 1000)
 })
 
 module.exports = server
